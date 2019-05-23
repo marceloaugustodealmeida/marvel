@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Marvel</string>
+    <string name="title_characters">Lista de personagens \n MARVEL </string>
+    <string name="notConnectInternet">Sem coxeção com a internet!</string>
+    <string name="fail">Falha!</string>
+    <string name="retryAPI">Erro ao carregar a lista de personagens, clique aqui para tentar novamente!</string>
+
 </resources>

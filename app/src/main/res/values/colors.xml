@@ -3,4 +3,12 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="colorButtonLogin">#3B48EE </color>
+    <color name="colorDetailsTop">#3B49EE </color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorBorder">#DCE2EE </color>
+    <color name="colorTypeAccount">#A8B4C4 </color>
+    <color name="colorDescAccount">#485465 </color>
+    <color name="colorBlack">#000000 </color>
+    <color name="colorRed">#FF0000 </color>
 </resources>
