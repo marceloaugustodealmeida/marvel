@@ -40,7 +40,7 @@ public class MainActivityController {
         RequestCharacter requestLogin = new RequestCharacter();
         requestLogin.limit = "1";
 
-        Call<ResponseCharacter> requestCatalog = service.listCharacter();
+        Call<ResponseCharacter> requestCatalog = service.listCharacter(10);
 
         requestCatalog.enqueue(new Callback<ResponseCharacter>() {
             @Override

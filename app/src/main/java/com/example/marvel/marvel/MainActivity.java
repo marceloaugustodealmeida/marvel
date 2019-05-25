@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void populationScreen() {
         //progress.dismiss();
-        
+
 
         layoutRV = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerViewCharacter.setLayoutManager(layoutRV);
