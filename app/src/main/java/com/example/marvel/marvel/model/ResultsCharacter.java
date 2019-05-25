@@ -1,81 +1,80 @@
 package com.example.marvel.marvel.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+//JsonIgnoreProperties = Ignora todas as variaveis que não estão listadas aqui
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ResultsCharacter implements Serializable {
 
     public int id;
     public String name;
     public String description;
     public Date modified;
-    public String resourceURI;
-    public Urls urls;
     public Thumbnail thumbnail;
+    public String resourceURI;
     public Comics comics;
+    public Series series;
     public Stories stories;
     public Events events;
-    public Series series;
+    public List<Urls> urls;
 
 }
 
-class Urls implements Serializable{
+class Urls implements Serializable {
     public String type;
     public String url;
 }
 
-class Thumbnail implements Serializable{
-    public String path;
-    public String extension;
-}
-
-class Comics implements Serializable{
+class Comics implements Serializable {
     public int available;
-    public int returned;
     public String collectionURI;
-    public ItemsComicsCharacter items;
-
+    public List<ItemsComicsCharacter> items;
+    public int returned;
 }
 
-class ItemsComicsCharacter implements Serializable{
+class ItemsComicsCharacter implements Serializable {
     public String resourceURI;
     public String name;
 }
 
-class Stories implements Serializable{
+class Stories implements Serializable {
     public int available;
-    public int returned;
     public String collectionURI;
-    public ItemsStoriesCharacter items;
+    public List<ItemsStoriesCharacter> items;
+    public int returned;
 }
 
-class ItemsStoriesCharacter implements Serializable{
+class ItemsStoriesCharacter implements Serializable {
     public String resourceURI;
     public String name;
     public String type;
 
 }
 
-class Events implements Serializable{
+class Events implements Serializable {
     public int available;
-    public int returned;
     public String collectionURI;
-    public ItemsEventsCharacter items;
+    public List<ItemsEventsCharacter> items;
+    public int returned;
 }
 
-class ItemsEventsCharacter implements Serializable{
+class ItemsEventsCharacter implements Serializable {
     public String resourceURI;
     public String name;
 }
 
-class Series implements Serializable{
+class Series implements Serializable {
     public int available;
-    public int returned;
     public String collectionURI;
-    public ItemsSeriesCharacter items;
+    public List<ItemsSeriesCharacter> items;
+    public int returned;
 }
 
-class ItemsSeriesCharacter implements Serializable{
+class ItemsSeriesCharacter implements Serializable {
     public String resourceURI;
     public String name;
 }

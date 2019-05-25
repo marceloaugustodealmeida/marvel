@@ -25,4 +25,30 @@ public class Utils {
         return false;
     }
 
+    // Insere S no link da imagem
+    public static String insertString(String originalString) {
+
+        String stringToBeInserted = "s";
+        int index = 3;
+        // Create a new string
+        String newString = new String();
+
+        for (int i = 0; i < originalString.length(); i++) {
+
+            // Insert the original string character
+            // into the new string
+            newString += originalString.charAt(i);
+
+            if (i == index) {
+
+                // Insert the string to be inserted
+                // into the new string
+                newString += stringToBeInserted;
+            }
+        }
+
+        // return the modified String
+        return newString;
+
+    }
 }

@@ -4,5 +4,6 @@
     <string name="notConnectInternet">Sem coxeção com a internet!</string>
     <string name="fail">Falha!</string>
     <string name="retryAPI">Erro ao carregar a lista de personagens, clique aqui para tentar novamente!</string>
+    <string name="nameMovie">Nome do filme</string>
 
 </resources>

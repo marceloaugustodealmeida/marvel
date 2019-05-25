@@ -1,88 +1,67 @@
 package com.example.marvel.marvel;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 
-import com.example.marvel.marvel.interfaceService.CharacterService;
-import com.example.marvel.marvel.model.RequestCharacter;
-import com.example.marvel.marvel.model.ResponseCharacter;
-import com.example.marvel.marvel.util.Utils;
+import com.example.marvel.marvel.adapter.StatementAdapter;
+import com.example.marvel.marvel.model.ResultsCharacter;
+import com.facebook.drawee.backends.pipeline.Fresco;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView listCharacter;
+    private RecyclerView recyclerViewCharacter;
+    private MainActivityController mainActivityController;
+    private List<ResultsCharacter> listCharacter;
+    private RecyclerView.LayoutManager layoutRV;
+    private StatementAdapter statementAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fresco.initialize(this);
         setContentView(R.layout.activity_main);
 
         setUI();
-        callAPI();
+        mainActivityController = new MainActivityController(this);
+        mainActivityController.callAPI();
     }
 
     private void setUI() {
-        listCharacter = (RecyclerView) findViewById(R.id.list_character);
+        recyclerViewCharacter = (RecyclerView) findViewById(R.id.list_character);
     }
 
-    private void callAPI() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(CharacterService.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        CharacterService service = retrofit.create(CharacterService.class);
+    public void populationScreen() {
+        //progress.dismiss();
+        
 
-        RequestCharacter requestLogin = new RequestCharacter();
-        requestLogin.limit = "10";
+        layoutRV = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        recyclerViewCharacter.setLayoutManager(layoutRV);
 
-        Call<ResponseCharacter> requestCatalog = service.listCharacter();
+        statementAdapter = new StatementAdapter(listCharacter);
+        recyclerViewCharacter.setAdapter(statementAdapter);
+    }
 
-        requestCatalog.enqueue(new Callback<ResponseCharacter>() {
-            @Override
-            public void onResponse(Call<ResponseCharacter> call, Response<ResponseCharacter> response) {
-                //progress.dismiss();
-                if (!response.isSuccess()) {
-                    Toast.makeText(MainActivity.this, getString(R.string.app_name) + response.code(), Toast.LENGTH_SHORT).show();
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void dismissProgress(List<ResultsCharacter> listCharacter) {
+        this.listCharacter = listCharacter;
+        populationScreen();
+    }
 
-                } else {
-                    ResponseCharacter dateClient = response.body();
+    public void register() {
+        EventBus.getDefault().register(this);
+    }
 
-                    //SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.userAccount), Context.MODE_PRIVATE);
-                    //SharedPreferences.Editor editor = sharedPreferences.edit();
-
-//                    editor.putInt(getString(R.string.userId), dateClient.userAccount.userId);
-//                    editor.putString(getString(R.string.name), dateClient.userAccount.name);
-//                    editor.putString(getString(R.string.bankAccount), dateClient.userAccount.bankAccount);
-//                    editor.putString(getString(R.string.agency), dateClient.userAccount.agency);
-//                    editor.putFloat(getString(R.string.balance), dateClient.userAccount.balance);
-
-                    //editor.putString(getString(R.string.user), edtUser.getText().toString());
-
-                    //editor.apply();
-                    //Intent intent = new Intent(LoginActivity.this, DetailsActivity.class);
-                    //startActivity(intent);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseCharacter> call, Throwable t) {
-                if (!Utils.isConected(MainActivity.this)) {
-                    Toast.makeText(MainActivity.this, getString(R.string.notConnectInternet), Toast.LENGTH_SHORT).show();
-                } else
-                    Toast.makeText(MainActivity.this, getString(R.string.fail) + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+    public void Unregister() {
+        EventBus.getDefault().unregister(this);
     }
 
 }
