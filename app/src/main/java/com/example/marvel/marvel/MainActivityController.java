@@ -30,7 +30,7 @@ public class MainActivityController {
         this.listCharacter = new ArrayList<ResultsCharacter>();
     }
 
-    public void callAPI() {
+    public void callAPI(int qtdCharacter) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(CharacterService.BASE_URL)
                 .addConverterFactory(JacksonConverterFactory.create())
@@ -40,7 +40,7 @@ public class MainActivityController {
         RequestCharacter requestLogin = new RequestCharacter();
         requestLogin.limit = "1";
 
-        Call<ResponseCharacter> requestCatalog = service.listCharacter(10);
+        Call<ResponseCharacter> requestCatalog = service.listCharacter(qtdCharacter);
 
         requestCatalog.enqueue(new Callback<ResponseCharacter>() {
             @Override

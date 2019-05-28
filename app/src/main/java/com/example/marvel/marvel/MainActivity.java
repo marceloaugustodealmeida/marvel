@@ -2,9 +2,12 @@ package com.example.marvel.marvel;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.View;
+import android.widget.ProgressBar;
 
+import com.example.marvel.marvel.adapter.EndlessRecyclerOnScrollListener;
 import com.example.marvel.marvel.adapter.StatementAdapter;
 import com.example.marvel.marvel.model.ResultsCharacter;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -23,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
     private List<ResultsCharacter> listCharacter;
     private RecyclerView.LayoutManager layoutRV;
     private StatementAdapter statementAdapter;
+    private ProgressBar itemProgressBar;
+    private int qtdCharacter = 5;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,28 +37,38 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setUI();
+
         mainActivityController = new MainActivityController(this);
-        mainActivityController.callAPI();
+        mainActivityController.callAPI(qtdCharacter);
     }
 
     private void setUI() {
         recyclerViewCharacter = (RecyclerView) findViewById(R.id.list_character);
+        itemProgressBar = (ProgressBar) findViewById(R.id.item_progress_bar);
     }
 
     public void populationScreen() {
-        //progress.dismiss();
 
-
-        layoutRV = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        recyclerViewCharacter.setLayoutManager(layoutRV);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerViewCharacter.setLayoutManager(linearLayoutManager);
 
         statementAdapter = new StatementAdapter(listCharacter);
+
         recyclerViewCharacter.setAdapter(statementAdapter);
+
+        recyclerViewCharacter.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
+            @Override
+            public void onLoadMore() {
+                addDataToList();
+            }
+        });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void dismissProgress(List<ResultsCharacter> listCharacter) {
         this.listCharacter = listCharacter;
+        statementAdapter.notifyDataSetChanged();
         populationScreen();
     }
 
@@ -62,6 +78,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void Unregister() {
         EventBus.getDefault().unregister(this);
+    }
+
+    private void addDataToList() {
+        //itemProgressBar.setVisibility(View.VISIBLE);
+
+        mainActivityController.callAPI(qtdCharacter+= 5);
+        //statementAdapter.notifyDataSetChanged();
+        //itemProgressBar.setVisibility(View.GONE);
+
+
     }
 
 }

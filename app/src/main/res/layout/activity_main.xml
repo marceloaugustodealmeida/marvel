@@ -52,6 +52,16 @@
         app:layout_constraintTop_toBottomOf="@+id/card_title"
         tools:listitem="@android:layout/simple_list_item_checked"/>
 
+    <ProgressBar
+        android:id="@+id/item_progress_bar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:elevation="@dimen/default_margin_8_dp"
+        android:padding="@dimen/default_margin_8_dp"
+        android:visibility="gone" />
+
     <TextView
         android:id="@+id/retry"
         android:layout_width="match_parent"
